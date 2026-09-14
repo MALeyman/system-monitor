@@ -1,0 +1,7 @@
+psutil
+py-cpuinfo
+matplotlib
+
+# опционально, только для NVIDIA:
+GPUtil
+nvidia-ml-py
