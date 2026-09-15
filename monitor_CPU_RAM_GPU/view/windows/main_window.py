@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+from app.settings import settings
 from view.panels.cpu_panel import CpuPanel
 from view.panels.ram_panel import RamPanel
 from view.panels.gpu_panel import GpuPanel
@@ -50,10 +51,12 @@ class MainWindow(tk.Tk):
         self.combo.pack(side=tk.LEFT)
         self.combo.bind("<<ComboboxSelected>>", self._on_page)
 
-        ttk.Button(self.header, text="О программе",
-                   command=self._about).pack(side=tk.LEFT)
+        # ttk.Button(self.header, text="О программе",
+        #            command=self._about).pack(side=tk.LEFT)
+        self._build_menu()
 
         self.show_page(0)
+        self._update_graphs_visibility()
 
 
     def _on_close(self) -> None:
@@ -66,6 +69,37 @@ class MainWindow(tk.Tk):
             except Exception: pass
         self.destroy()
         self.quit()
+
+
+    def _build_menu(self) -> None:
+        menubar = tk.Menu(self)
+
+        file_menu = tk.Menu(menubar, tearoff=0)
+        file_menu.add_command(label="Настройки", command=self._open_settings)
+        file_menu.add_separator()
+        file_menu.add_command(label="О программе", command=self._about)
+        file_menu.add_separator()
+        file_menu.add_command(label="Выход", command=self._on_close)
+
+        menubar.add_cascade(label="Меню", menu=file_menu)
+        self.config(menu=menubar)
+
+    def _open_settings(self) -> None:
+        from view.windows.settings_window import show_settings
+        show_settings(self)
+
+    def apply_settings(self) -> None:
+        """Вызывается после изменения настроек."""
+        self._update_graphs_visibility()
+
+    def _update_graphs_visibility(self) -> None:
+        """Показывает/скрывает мини-графики рядом с прогрессбарами."""
+        show = settings.show_graphs
+        for panel in (self.cpu_panel, self.ram_panel, self.gpu_panel):
+            if hasattr(panel, "set_graph_visible"):
+                panel.set_graph_visible(show)
+
+
 
     # -------- роутинг --------
     def _on_page(self, event=None) -> None:

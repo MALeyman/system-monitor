@@ -6,12 +6,13 @@ from common.metrics import GpuMetrics
 from view.panels.base import BasePanel
 from view.widgets.labeled_progressbar import LabeledProgressbar
 from view.widgets.styles import init_styles
-
+from view.graphs.mini_graph import MiniGraph
 
 class GpuPanel(BasePanel):
     def __init__(self, master):
         super().__init__(master, "ИНДИКАТОРЫ GPU")
         self._has_gpu = True    # переключается при первом update_data
+        self._graph = None
         init_styles()
 
     def build(self) -> None:
@@ -37,6 +38,15 @@ class GpuPanel(BasePanel):
         )
 
         super().build()
+
+    def set_graph_visible(self, visible: bool) -> None:
+        if visible and self._graph is None:
+            self._graph = MiniGraph(self, color="#4CAF50")
+            self._graph.pack(fill=tk.X, padx=2, pady=(0, 5))
+        elif not visible and self._graph is not None:
+            self._graph.destroy()
+            self._graph = None
+
 
     # ------------------------------------------------------------------
     def set_available(self, available: bool) -> None:
@@ -83,3 +93,6 @@ class GpuPanel(BasePanel):
             gpu_mem_text(m.memory_used_gb, m.memory_total_gb, m.memory_percent),
             "BLUE",
         )
+
+        if self._graph is not None:
+            self._graph.append_value(m.usage)
