@@ -29,7 +29,7 @@ class GpuPanel(BasePanel):
         self.mem_bar = LabeledProgressbar(self, style="Label_Ram_GPU")
         self.mem_bar.pack(fill=tk.X, padx=2, pady=5)
 
-        # Метка для случая «GPU нет» — скрыта по умолчанию
+        # Метка для случая GPU нет — скрыта по умолчанию
         self.no_gpu_label = ttk.Label(
             self,
             text="NVIDIA GPU не обнаружен",
@@ -41,14 +41,13 @@ class GpuPanel(BasePanel):
 
     def set_graph_visible(self, visible: bool) -> None:
         if visible and self._graph is None:
-            self._graph = MiniGraph(self, color="#4CAF50")
+            
+            self._graph = MiniGraph(self, color="#DB142E", color2="#2196F3")
             self._graph.pack(fill=tk.X, padx=2, pady=(0, 5))
         elif not visible and self._graph is not None:
             self._graph.destroy()
             self._graph = None
-
-
-    # ------------------------------------------------------------------
+    # 
     def set_available(self, available: bool) -> None:
         """Переключает вид панели между «есть GPU» и «нет GPU»."""
         if available == self._has_gpu:
@@ -68,7 +67,7 @@ class GpuPanel(BasePanel):
             self.mem_bar.pack_forget()
             self.no_gpu_label.pack(fill=tk.BOTH, expand=True)
 
-    # ------------------------------------------------------------------
+    # 
     def update_data(self, m: GpuMetrics) -> None:
         self.ensure_built()
 
@@ -87,12 +86,13 @@ class GpuPanel(BasePanel):
             temp_str = f"{m.name}: температура недоступна"
         self.temp_label.config(text=temp_str)
 
-        self.usage_bar.update_value(m.usage, f"GPU: {m.usage}%", "GREEN")
+        self.usage_bar.update_value(m.usage, f"GPU: {m.usage}%", "#DB142E")
         self.mem_bar.update_value(
             m.memory_percent,
             gpu_mem_text(m.memory_used_gb, m.memory_total_gb, m.memory_percent),
-            "BLUE",
+            "#2196F3",
         )
 
         if self._graph is not None:
-            self._graph.append_value(m.usage)
+            self._graph.append_value(m.usage)            # загрузка GPU
+            self._graph.append_value2(m.memory_percent)  # память GPU
