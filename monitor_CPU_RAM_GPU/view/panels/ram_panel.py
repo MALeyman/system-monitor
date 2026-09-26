@@ -27,6 +27,6 @@ class RamPanel(BasePanel):
 
     def update_data(self, m: RamMetrics) -> None:
         self.ensure_built()
-        self.bar.update_value(m.percent, ram_text(m.used_gb, m.total_gb, m.percent), "#00BCD4")
+        self.bar.update_value(m.percent, ram_text(m.used_gb, m.total_gb, m.percent), "BLUE")
         if self._graph is not None:
             self._graph.append_value(m.percent)

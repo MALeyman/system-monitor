@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+import sys
+import os
 
 from app.settings import settings
 from view.panels.cpu_panel import CpuPanel
@@ -16,15 +18,22 @@ class MainWindow(tk.Tk):
     PAGES = ("Основное", "Мин", "CPU", "Накопители", "GPU", "Графика")
 
     def __init__(self, controller):
-        super().__init__()
+        # Разные WMClass для разных режимов запуска
+        if getattr(sys, 'frozen', False):
+            wm_class = "MonitorCpuRamGpu"       # из .deb (PyInstaller)
+        else:
+            wm_class = "MonitorCpuRamGpuDev"    # из исходников (dev)
+    
+        super().__init__(className=wm_class)
         self.controller = controller
 
         try:
-            self.iconphoto(True, tk.PhotoImage(file="assets/icon.png"))
+            self.iconphoto(True, tk.PhotoImage(file=_resource_path("assets/icon.png")))
         except Exception:
             pass
 
         self.title("Мониторинг")
+                
         self.attributes("-alpha", 0.9)
         self.attributes("-topmost", False)
         self.overrideredirect(False)
@@ -69,6 +78,11 @@ class MainWindow(tk.Tk):
             except Exception: pass
         self.destroy()
         self.quit()
+
+    def _resource_path(relative):
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS, relative)
+        return os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), relative)
 
 
     def _build_menu(self) -> None:

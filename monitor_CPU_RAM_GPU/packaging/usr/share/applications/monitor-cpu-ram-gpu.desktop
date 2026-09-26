@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Мониторинг ресурсов
+Comment=Мониторинг CPU, RAM, GPU и дисков
+Exec=/usr/bin/monitor-cpu-ram-gpu
+Icon=/usr/share/icons/monitor-cpu-ram-gpu.png
+Terminal=false
+Categories=Utility;System;Monitor;
+StartupNotify=true
+StartupWMClass=monitorCpuRamGpu

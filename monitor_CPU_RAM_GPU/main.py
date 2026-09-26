@@ -1,15 +1,27 @@
-#!/home/maksim/develops/python/appvenv/bin/python
+#!/home/maksim/myapp/monitor_CPU_RAM_GPU/appvenv/bin/python
 import fcntl
 import logging
 import os
 import sys
 from logging.handlers import RotatingFileHandler
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+def _get_base_dir():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__))
+
+BASE_DIR = _get_base_dir()
 sys.path.insert(0, BASE_DIR)
 
-LOCK_PATH = os.path.join(BASE_DIR, ".monitor.lock")
-LOG_PATH = os.path.join(BASE_DIR, "monitor.log")
+# Логи и lock — в домашнюю папку, если запущено из PyInstaller-бинарника
+if getattr(sys, 'frozen', False):
+    log_dir = os.path.join(os.path.expanduser("~"), ".local", "share", "monitor-cpu-ram-gpu")
+    os.makedirs(log_dir, exist_ok=True)
+    LOG_PATH = os.path.join(log_dir, "monitor.log")
+    LOCK_PATH = os.path.join(log_dir, ".monitor.lock")
+else:
+    LOG_PATH = os.path.join(BASE_DIR, "monitor.log")
+    LOCK_PATH = os.path.join(BASE_DIR, ".monitor.lock")
 
 _lock_fd = None  # держим ссылку, чтобы GC не закрыл файл
 

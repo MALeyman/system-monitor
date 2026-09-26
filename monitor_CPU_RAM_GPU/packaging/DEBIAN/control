@@ -1,0 +1,11 @@
+Package: monitor-cpu-ram-gpu
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: libc6, libglib2.0-0, libxcb1, libxcursor1, libxfixes3
+Recommends: lm-sensors, smartmontools, nvme-cli
+Maintainer: Лейман М.А. <makc.mon@mail.ru>
+Description: Мониторинг ресурсов CPU, RAM, GPU и дисков
+ Приложение на Python 3 с интерфейсом Tkinter.
+ Отображает загрузку CPU, RAM, GPU, температуры и графики истории.

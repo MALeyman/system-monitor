@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+case "$1" in
+    remove|purge)
+        # Удаляем настройку sudoers, созданную postinst
+        rm -f /etc/sudoers.d/monitor-cpu-ram-gpu
+        ;;
+esac
+
+exit 0

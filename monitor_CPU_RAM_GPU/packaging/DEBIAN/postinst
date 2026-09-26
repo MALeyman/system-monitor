@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+case "$1" in
+    configure)
+        USER_NAME="${SUDO_USER:-$USER}"
+        if [ -d /etc/sudoers.d ] && [ -n "$USER_NAME" ] && [ "$USER_NAME" != "root" ]; then
+            FILE="/etc/sudoers.d/monitor-cpu-ram-gpu"
+            echo "${USER_NAME} ALL=(ALL) NOPASSWD: /usr/sbin/nvme, /usr/sbin/smartctl" > "$FILE"
+            chmod 440 "$FILE"
+            chown root:root "$FILE"
+            if ! visudo -c -f "$FILE" >/dev/null 2>&1; then
+                rm -f "$FILE"
+                echo "Ошибка настройки sudoers" >&2
+            fi
+        fi
+        ;;
+esac
+exit 0

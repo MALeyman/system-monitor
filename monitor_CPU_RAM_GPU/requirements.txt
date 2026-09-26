@@ -1,6 +1,7 @@
 psutil
 py-cpuinfo
 matplotlib
+setuptools
 
 # опционально, только для NVIDIA:
 GPUtil

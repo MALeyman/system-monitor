@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Виртуальные окружения
+appvenv/
+buildenv/
+venv/
+
+# Сборка
+build/
+dist/
+dist-old/
+*.spec
+
+# .deb
+*.deb
+monitor_CPU_RAM_GPU/packaging/usr/bin/monitor-cpu-ram-gpu
+
+# Логи и временные
+*.log
+.monitor.lock
+settings.json
+
+# Docker
+.dockerignore
+
+# IDE
+.vscode/
+.idea/

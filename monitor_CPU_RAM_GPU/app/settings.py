@@ -1,8 +1,20 @@
 import json
 import os
+import sys
 
-_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_SETTINGS_PATH = os.path.join(_BASE_DIR, "settings.json")
+
+def _get_settings_path():
+    # Если запущено из PyInstaller — пишем в ~/.config
+    if getattr(sys, 'frozen', False):
+        config_dir = os.path.join(os.path.expanduser("~"), ".config", "monitor-cpu-ram-gpu")
+        os.makedirs(config_dir, exist_ok=True)
+        return os.path.join(config_dir, "settings.json")
+    # Иначе — рядом с проектом
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_dir, "settings.json")
+
+
+_SETTINGS_PATH = _get_settings_path()
 
 
 class _Settings:
