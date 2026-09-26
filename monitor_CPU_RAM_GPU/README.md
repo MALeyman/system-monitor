@@ -60,12 +60,11 @@ sudo sensors-detect --auto
 ```
 
 ### **Для работы температур дисков** приложению нужен доступ к `smartctl` без пароля. Это настраивается автоматически через `postinst`-скрипт при установке `.deb`:
- 
-```
-/etc/sudoers.d/monitor-cpu-ram-gpu:
-<user>  ALL=(ALL) NOPASSWD: /usr/sbin/nvme, /usr/sbin/smartctl\
-# Где `<user>` — имя пользователя, установившего пакет.
-```
+ Скрипт создаёт файл `/etc/sudoers.d/monitor-cpu-ram-gpu` с правилом:
+
+<имя_пользователя> ALL=(ALL) NOPASSWD: /usr/sbin/nvme, /usr/sbin/smartctl
+Где `<имя_пользователя>` — **логин пользователя, установившего `.deb`** (берётся из переменной `$SUDO_USER` при установке)..
+
 ```
 Поддерживаемые системы
 Система	Статус
