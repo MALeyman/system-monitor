@@ -59,10 +59,12 @@ sudo apt install lm-sensors smartmontools nvme-cli
 sudo sensors-detect --auto
 ```
 
-### Для работы температур дисков приложению нужен доступ к smartctl без пароля. Это настраивается автоматически через postinst-скрипт при установке .deb  
+### **Для работы температур дисков** приложению нужен доступ к `smartctl` без пароля. Это настраивается автоматически через `postinst`-скрипт при установке `.deb`:
+ 
 ```
 /etc/sudoers.d/monitor-cpu-ram-gpu:
-maksim ALL=(ALL) NOPASSWD: /usr/sbin/nvme, /usr/sbin/smartctl\
+<user>  ALL=(ALL) NOPASSWD: /usr/sbin/nvme, /usr/sbin/smartctl\
+# Где `<user>` — имя пользователя, установившего пакет.
 ```
 ```
 Поддерживаемые системы
