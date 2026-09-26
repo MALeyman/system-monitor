@@ -22,7 +22,7 @@
 
 ```bash
 # Скачать .deb
-wget https://github.com/MALeyman/monitor-cpu-ram-gpu/releases/latest/download/monitor-cpu-ram-gpu_1.0.0_amd64.deb
+wget https://github.com/MALeyman/system-monitor/releases/latest/download/monitor-cpu-ram-gpu_1.0.0_amd64.deb
 
 # Установить
 sudo apt install ./monitor-cpu-ram-gpu_1.0.0_amd64.deb
