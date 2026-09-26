@@ -54,8 +54,10 @@ sudo apt remove monitor-cpu-ram-gpu
 ```
 
 ## Ручная установка зависимостей (если не установилось автоматически)
+```
 sudo apt install lm-sensors smartmontools nvme-cli
 sudo sensors-detect --auto
+```
 
 ### Для работы температур дисков приложению нужен доступ к smartctl без пароля. Это настраивается автоматически через postinst-скрипт при установке .deb  
 ```
